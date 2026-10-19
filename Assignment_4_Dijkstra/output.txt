@@ -1,21 +1,14 @@
-Sample Input
-------------
-6
-8
+Enter number of intersections: 5
+Enter number of roads: 6
+Enter roads (u v time):
 0 1 4
 0 2 2
 1 2 1
 1 3 5
 2 3 8
-2 4 10
-3 5 3
-4 5 4
-0
-2
-3 5
-
-Sample Output
--------------
-Enter number of intersections: Enter number of roads: Enter roads (u v time):
-Enter ambulance start location: Enter number of hospitals: Enter hospital locations: Nearest hospital: 3
-Travel time: 8 minutes
+3 4 2
+Enter ambulance start location: 0
+Enter number of hospitals: 2
+Enter hospital locations: 1 4
+Nearest hospital: 1
+Travel time: 3 minutes
