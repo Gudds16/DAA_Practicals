@@ -1,26 +1,42 @@
-Sample Input
-------------
-5
-12
-OxygenCylinder 5 70
-FirstAidKit 2 30
-Stretcher 7 80
-FoodRation 4 44
-WarmBlanket 3 27
+========== RESCUE LOAD OPTIMIZATION ==========
 
-Sample Output
--------------
-Number of supply types: Helicopter payload limit (kg): Enter label, mass (kg) and benefit for each supply:
+Number of supply types: 4
+Helicopter payload limit (kg): 10
 
-Optimal benefit (DP): 150
---- Dynamic Programming selection ---
-  Total mass    : 12 kg
-  Total benefit : 150
-  * OxygenCylinder (5 kg, benefit 70)
-  * Stretcher (7 kg, benefit 80)
---- Greedy (benefit per kg) selection ---
-  Total mass    : 11 kg
-  Total benefit : 144
-  * FirstAidKit (2 kg, benefit 30)
-  * OxygenCylinder (5 kg, benefit 70)
-  * FoodRation (4 kg, benefit 44)
+Enter label, mass (kg) and benefit for each supply:
+Food 5 30
+Water 4 24
+Medicine 3 18
+Blanket 2 10
+
+========== OPTIMAL SOLUTION (DP) ==========
+
+Optimal benefit (DP): 58
+
+--- Dynamic Programming Selection ---
+Total mass    : 10 kg
+Total benefit : 58
+
+Selected supplies:
+1. Food         (5 kg, benefit 30)
+2. Medicine     (3 kg, benefit 18)
+3. Blanket      (2 kg, benefit 10)
+
+========== GREEDY SOLUTION ==========
+
+--- Greedy (Benefit per kg) Selection ---
+Total mass    : 9 kg
+Total benefit : 54
+
+Selected supplies:
+1. Food         (5 kg, benefit 30)
+2. Water        (4 kg, benefit 24)
+
+========== PROFIT AND LOSS COMPARISON ==========
+
+DP Optimal Benefit : 58
+Greedy Benefit     : 54
+Loss using Greedy  : 4
+Greedy Efficiency  : 93.10%
+
+==============================================
