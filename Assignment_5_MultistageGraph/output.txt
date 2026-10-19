@@ -1,0 +1,236 @@
+Sample Input
+------------
+5
+2 3 3 2 2
+21
+0 2 7
+0 3 4
+1 3 6
+1 4 2
+1 2 8
+2 5 5
+2 6 9
+3 5 8
+3 6 3
+3 7 6
+4 6 4
+4 7 1
+5 8 4
+5 9 7
+6 8 6
+6 9 2
+7 9 3
+8 10 3
+8 11 8
+9 10 6
+9 11 2
+5
+1
+0 10
+2
+6 9 3
+3
+3 6
+5
+4
+3 6
+1
+1 11
+2
+0 5 2
+2
+8 10 -1
+1
+5 10
+6
+0
+
+Sample Output
+-------------
+=== MediLink Cold-Chain Route Planner (Forward DP) ===
+Number of stages: Nodes in each stage (5 values): Number of roads: Enter roads as: from to cost
+Network loaded: 12 nodes, 21 roads.
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice:   Cost matrix (rows = plants, columns = hospitals)
+          H10       H11       
+  P0      15.00     11.00     
+  P1      12.00     8.00      
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice: Enter plant and hospital node ids:   Route  : 0 -> 3 -> 6 -> 9 -> 10
+  Legs   :
+     0(Plant) -> 3(Regional DC)  cost 4.00
+     3(Regional DC) -> 6(City Hub)  cost 3.00
+     6(City Hub) -> 9(Local Depot)  cost 2.00
+     9(Local Depot) -> 10(Hospital)  cost 6.00
+  Total delivery cost = 15.00
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice: Enter u v multiplier:   Road 6 -> 9 : base 2.00 x 3.00 = live 6.00
+  Last request 0 -> 10 : 15.00 => 16.00
+  Route  : 0 -> 3 -> 6 -> 8 -> 10
+  Legs   :
+     0(Plant) -> 3(Regional DC)  cost 4.00
+     3(Regional DC) -> 6(City Hub)  cost 3.00
+     6(City Hub) -> 8(Local Depot)  cost 6.00
+     8(Local Depot) -> 10(Hospital)  cost 3.00
+  Total delivery cost = 16.00
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice: Enter u v:   Road 3 -> 6 is now CLOSED.
+  Last request 0 -> 10 : 16.00 => 19.00
+  Route  : 0 -> 2 -> 5 -> 8 -> 10
+  Legs   :
+     0(Plant) -> 2(Regional DC)  cost 7.00
+     2(Regional DC) -> 5(City Hub)  cost 5.00
+     5(City Hub) -> 8(Local Depot)  cost 4.00
+     8(Local Depot) -> 10(Hospital)  cost 3.00
+  Total delivery cost = 19.00
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice:   Cost matrix (rows = plants, columns = hospitals)
+          H10       H11       
+  P0      19.00     15.00     
+  P1      12.00     8.00      
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice: Enter u v:   Road 3 -> 6 reopened at live cost 3.00.
+  Last request 0 -> 10 : 19.00 => 16.00
+  Route  : 0 -> 3 -> 6 -> 8 -> 10
+  Legs   :
+     0(Plant) -> 3(Regional DC)  cost 4.00
+     3(Regional DC) -> 6(City Hub)  cost 3.00
+     6(City Hub) -> 8(Local Depot)  cost 6.00
+     8(Local Depot) -> 10(Hospital)  cost 3.00
+  Total delivery cost = 16.00
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice: Enter plant and hospital node ids:   Route  : 1 -> 4 -> 7 -> 9 -> 11
+  Legs   :
+     1(Plant) -> 4(Regional DC)  cost 2.00
+     4(Regional DC) -> 7(City Hub)  cost 1.00
+     7(City Hub) -> 9(Local Depot)  cost 3.00
+     9(Local Depot) -> 11(Hospital)  cost 2.00
+  Total delivery cost = 8.00
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice: Enter u v multiplier:   Road 0 -> 5 does not exist.
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice: Enter u v multiplier:   Multiplier cannot be negative. Nothing changed.
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice: Enter plant and hospital node ids:   Node 5 is not a Stage-0 (plant) node.
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice:   From -> To   Base    Live    Status
+     0 -> 2      7.00    7.00  open
+     0 -> 3      4.00    4.00  open
+     1 -> 3      6.00    6.00  open
+     1 -> 4      2.00    2.00  open
+     1 -> 2      8.00    8.00  open
+     2 -> 5      5.00    5.00  open
+     2 -> 6      9.00    9.00  open
+     3 -> 5      8.00    8.00  open
+     3 -> 6      3.00    3.00  open
+     3 -> 7      6.00    6.00  open
+     4 -> 6      4.00    4.00  open
+     4 -> 7      1.00    1.00  open
+     5 -> 8      4.00    4.00  open
+     5 -> 9      7.00    7.00  open
+     6 -> 8      6.00    6.00  open
+     6 -> 9      2.00    6.00  open
+     7 -> 9      3.00    3.00  open
+     8 -> 10     3.00    3.00  open
+     8 -> 11     8.00    8.00  open
+     9 -> 10     6.00    6.00  open
+     9 -> 11     2.00    2.00  open
+
+----------------- MENU -----------------
+ 1 Delivery request (plant, hospital)
+ 2 Traffic / fuel update (u v multiplier)
+ 3 Close a road (u v)
+ 4 Reopen a road (u v)
+ 5 Show cost matrix
+ 6 List all roads
+ 0 Exit
+Choice: 
+Planner closed. Safe deliveries!
