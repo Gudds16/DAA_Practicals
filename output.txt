@@ -1,0 +1,20 @@
+Sample Input
+-------------
+5
+10
+Rice 4 40
+Water 3 30
+Medicine 2 50
+Blanket 5 45
+Food 6 60
+
+Sample Output
+-------------
+Enter number of relief items: Enter truck capacity (kg): Enter each item's name, weight, and utility value:
+
+Maximum Relief Utility: 125
+Total Weight Carried: 10 kg
+Selected Relief Supplies:
+- Water
+- Medicine
+- Blanket
