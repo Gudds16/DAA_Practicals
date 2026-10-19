@@ -1,0 +1,26 @@
+====================== SORTED MOVIES (QUICK SORT) ======================
+
++----------------------------------------------+------------+
+| Title                                        | Popularity |
++----------------------------------------------+------------+
+| The Shawshank Redemption                     |         12 |
+| The Godfather                                |         25 |
+| The Dark Knight                              |         45 |
+| Pulp Fiction                                 |         67 |
+| Forrest Gump                                 |         89 |
+| Inception                                    |        105 |
+| Interstellar                                 |        130 |
+| The Matrix                                   |        156 |
+| Fight Club                                   |        180 |
+| Titanic                                      |        220 |
+| Avatar                                       |        310 |
+| Jurassic Park                                |        420 |
+| The Avengers                                 |        550 |
+| Iron Man                                     |        680 |
+| Spider-Man                                   |        850 |
++----------------------------------------------+------------+
+
+Total Records Sorted : 15
+Sorting Algorithm    : Quick Sort
+Sorted By            : Popularity (Ascending)
+Time Taken (ns)      : 125000

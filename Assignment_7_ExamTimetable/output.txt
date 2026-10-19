@@ -1,0 +1,45 @@
+Sample Input
+------------
+8
+DAA DBMS OS CN SE ML TOC CC
+10
+R1 3 OS DAA DBMS
+R2 3 CC SE DBMS
+R3 2 ML TOC
+R4 2 TOC DBMS
+R5 3 CN DBMS DAA
+R6 2 ML SE
+R7 2 ML DBMS
+R8 2 SE TOC
+R9 3 CN DAA ML
+R10 2 TOC CN
+4
+LH1 5
+LH2 4
+LH3 3
+LH4 2
+
+Sample Output
+-------------
+Number of subjects: Subject codes:
+Number of students: Enrolments (roll count code1 code2 ...):
+Number of halls: Hall name and seats:
+
+Conflict graph: 8 subjects, 16 conflicts
+Welsh-Powell slots: 5
+DSATUR slots      : 4
+Clash check       : PASSED
+
+Final timetable (4 slots):
+Slot 1:
+   DBMS  ->  LH1  (5 students, 7 conflicts)
+Slot 2:
+   OS  ->  LH4  (1 students, 2 conflicts)
+   ML  ->  LH2  (4 students, 5 conflicts)
+   CC  ->  LH3  (1 students, 2 conflicts)
+Slot 3:
+   DAA  ->  LH3  (3 students, 4 conflicts)
+   TOC  ->  LH2  (4 students, 4 conflicts)
+Slot 4:
+   CN  ->  LH3  (3 students, 4 conflicts)
+   SE  ->  LH2  (3 students, 4 conflicts)

@@ -1,0 +1,20 @@
+Sample Input
+------------
+4
+10
+60
+20
+100
+30
+120
+15
+45
+50
+
+Sample Output
+-------------
+Enter number of items: Enter weight of item 1: Enter value of item 1: Enter weight of item 2: Enter value of item 2: Enter weight of item 3: Enter value of item 3: Enter weight of item 4: Enter value of item 4: Enter knapsack capacity: Item 1 taken completely
+Item 2 taken completely
+Item 3 taken 66.66666666666666%
+
+Maximum value = 240.0

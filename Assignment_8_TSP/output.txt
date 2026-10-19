@@ -1,0 +1,61 @@
+Sample Input
+------------
+5
+Depot Dairy1 Dairy2 Shop1 Shop2
+0 12 10 19 8
+12 0 3 7 2
+10 3 0 6 20
+19 7 6 0 4
+8 2 20 4 0
+0 20 18 30 14
+20 0 6 11 4
+18 6 0 9 25
+30 11 9 0 7
+14 4 25 7 0
+0
+0
+60
+-1
+
+Sample Output
+-------------
+=== FreshRoute Dairy : TSP by Least Cost Branch and Bound ===
+Number of stops (including depot): Stop names (5 words): Fuel cost matrix (5 x 5):
+Travel time matrix in minutes (5 x 5):
+Depot (start) index: 
+Enter time limit in minutes (0 = no limit, -1 = quit): 
+--- Time limit = none ---
+  Initial reduced-matrix lower bound = 28
+  #1  expand path [0]  lb = 28
+  #2  expand path [0 -> 2]  lb = 29
+  #3  expand path [0 -> 2 -> 1]  lb = 29
+  #4  expand path [0 -> 2 -> 3]  lb = 30
+  #5  expand path [0 -> 4]  lb = 30
+  #6  expand path [0 -> 4 -> 3]  lb = 30
+  #7  expand path [0 -> 4 -> 1]  lb = 31
+  #8  expand path [0 -> 2 -> 1 -> 3]  lb = 32
+  Best tour : 0 -> 2 -> 1 -> 3 -> 4 -> 0
+     Depot       -> Dairy2      fuel  10   time  18 min
+     Dairy2      -> Dairy1      fuel   3   time   6 min
+     Dairy1      -> Shop1       fuel   7   time  11 min
+     Shop1       -> Shop2       fuel   4   time   7 min
+     Shop2       -> Depot       fuel   8   time  14 min
+  Total fuel cost = 32, total time = 56 min
+  Nodes: generated 20, expanded 9, pruned by bound 11, pruned by time 0
+  Check by brute force: 24 of 24 tours feasible, best = 32  [MATCH]
+
+Enter time limit in minutes (0 = no limit, -1 = quit): 
+--- Time limit = 60 min ---
+  Initial reduced-matrix lower bound = 28
+  Best tour : 0 -> 4 -> 3 -> 1 -> 2 -> 0
+     Depot       -> Shop2       fuel   8   time  14 min
+     Shop2       -> Shop1       fuel   4   time   7 min
+     Shop1       -> Dairy1      fuel   7   time  11 min
+     Dairy1      -> Dairy2      fuel   3   time   6 min
+     Dairy2      -> Depot       fuel  10   time  18 min
+  Total fuel cost = 32, total time = 56 min
+  Nodes: generated 19, expanded 9, pruned by bound 10, pruned by time 1
+  Check by brute force: 8 of 24 tours feasible, best = 32  [MATCH]
+
+Enter time limit in minutes (0 = no limit, -1 = quit): 
+Route planner closed.
