@@ -11,10 +11,12 @@ public class fractionalKnapsack {
 
         double[] weight = new double[n];
         double[] value = new double[n];
+        int[] id = new int[n];   // original item numbers, moved along while sorting
 
         // Input
         for (int i = 0; i < n; i++) {
             System.out.print("Enter weight of item " + (i + 1) + ": ");
+            id[i] = i + 1;
             weight[i] = sc.nextDouble();
 
             System.out.print("Enter value of item " + (i + 1) + ": ");
@@ -40,6 +42,10 @@ public class fractionalKnapsack {
                     temp = value[i];
                     value[i] = value[j];
                     value[j] = temp;
+
+                    int tempId = id[i];
+                    id[i] = id[j];
+                    id[j] = tempId;
                 }
             }
         }
@@ -55,7 +61,7 @@ public class fractionalKnapsack {
                 capacity = capacity - weight[i];
                 totalValue = totalValue + value[i];
 
-                System.out.println("Item " + (i + 1) + " taken completely");
+                System.out.println("Item " + id[i] + " taken completely");
 
             } else {
 
@@ -65,7 +71,7 @@ public class fractionalKnapsack {
                 totalValue = totalValue + value[i] * fraction;
 
                 System.out.println(
-                    "Item " + (i + 1) + " taken " +
+                    "Item " + id[i] + " taken " +
                     (fraction * 100) + "%"
                 );
 

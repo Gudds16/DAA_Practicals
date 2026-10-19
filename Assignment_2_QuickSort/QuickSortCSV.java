@@ -67,15 +67,15 @@ public class QuickSortCSV {
 
         // Display Sorted Data (first 15 rows)
         System.out.println("\n====================== SORTED MOVIES (QUICK SORT) ======================\n");
-        System.out.println("+--------------------------------------------+------------+");
+        System.out.println("+----------------------------------------------+------------+");
         System.out.printf("| %-44s | %-10s |%n", "Title", "Popularity");
-        System.out.println("+--------------------------------------------+------------+");
+        System.out.println("+----------------------------------------------+------------+");
 
         int limit = Math.min(15, movies.length);
         for (int k = 0; k < limit; k++) {
             System.out.printf("| %-44s | %-10d |%n", movies[k].title, movies[k].popularity);
         }
-        System.out.println("+--------------------------------------------+------------+");
+        System.out.println("+----------------------------------------------+------------+");
 
         System.out.println("\nTotal Records Sorted : " + movies.length);
         System.out.println("Sorting Algorithm    : Quick Sort");
