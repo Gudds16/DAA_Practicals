@@ -1,219 +1,315 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.TreeSet;
+
+import java.util.*;
 
 public class ExamScheduler {
 
-    static class Hall {
-        final String name;
-        final int seats;
+    static int n;
+    static String[] subject;
+    static int[][] graph;
+    static int[] students;
+    static String[] hallName;
+    static int[] hallSeats;
 
-        Hall(String name, int seats) {
-            this.name = name;
-            this.seats = seats;
+    static String[] colourNames = {
+        "Red", "Green", "Blue", "Yellow", "Orange",
+        "Purple", "Pink", "Brown", "Cyan", "Magenta"
+    };
+
+    static int getDegree(int v) {
+        int degree = 0;
+        for (int i = 0; i < n; i++) {
+            degree += graph[v][i];
         }
+        return degree;
     }
 
-    // ---------- helpers ----------
-    static int smallestFreeColour(List<TreeSet<Integer>> g, int[] colour, int u) {
-        boolean[] blocked = new boolean[g.size() + 1];
-        for (int v : g.get(u)) {
-            if (colour[v] != -1) {
-                blocked[colour[v]] = true;
-            }
-        }
-        int c = 0;
-        while (blocked[c]) {
-            c++;
-        }
-        return c;
-    }
-
-    static int slotsUsed(int[] colour) {
-        int max = -1;
-        for (int c : colour) {
-            max = Math.max(max, c);
-        }
-        return max + 1;
-    }
-
-    // ---------- Welsh-Powell: highest degree first, then greedy ----------
-    static int[] welshPowell(List<TreeSet<Integer>> g) {
-        int n = g.size();
+    static int[] welshPowell() {
         Integer[] order = new Integer[n];
+
         for (int i = 0; i < n; i++) {
             order[i] = i;
         }
-        Arrays.sort(order, (a, b) -> g.get(b).size() - g.get(a).size());
 
-        int[] colour = new int[n];
-        Arrays.fill(colour, -1);
-        for (int u : order) {
-            colour[u] = smallestFreeColour(g, colour, u);
-        }
-        return colour;
-    }
+        Arrays.sort(order, (a, b) ->
+            Integer.compare(getDegree(b), getDegree(a))
+        );
 
-    // ---------- DSATUR: pick the vertex with most distinct neighbour colours ----------
-    static int[] dsatur(List<TreeSet<Integer>> g) {
-        int n = g.size();
-        int[] colour = new int[n];
-        Arrays.fill(colour, -1);
+        int[] color = new int[n];
+        Arrays.fill(color, -1);
 
-        for (int step = 0; step < n; step++) {
-            int pick = -1, pickSat = -1, pickDeg = -1;
-            for (int u = 0; u < n; u++) {
-                if (colour[u] != -1) {
-                    continue;
-                }
-                TreeSet<Integer> seen = new TreeSet<>();
-                for (int v : g.get(u)) {
-                    if (colour[v] != -1) {
-                        seen.add(colour[v]);
+        int currentColor = 0;
+
+        for (int v : order) {
+            if (color[v] != -1) {
+                continue;
+            }
+
+            color[v] = currentColor;
+
+            for (int u : order) {
+                if (color[u] == -1) {
+                    boolean canColor = true;
+
+                    for (int i = 0; i < n; i++) {
+                        if (color[i] == currentColor && graph[u][i] == 1) {
+                            canColor = false;
+                            break;
+                        }
+                    }
+
+                    if (canColor) {
+                        color[u] = currentColor;
                     }
                 }
-                int sat = seen.size();
-                int deg = g.get(u).size();
-                if (sat > pickSat || (sat == pickSat && deg > pickDeg)) {
-                    pick = u;
-                    pickSat = sat;
-                    pickDeg = deg;
-                }
             }
-            colour[pick] = smallestFreeColour(g, colour, pick);
+
+            currentColor++;
         }
-        return colour;
+
+        return color;
     }
 
-    static boolean isConflictFree(List<TreeSet<Integer>> g, int[] colour) {
-        for (int u = 0; u < g.size(); u++) {
-            for (int v : g.get(u)) {
-                if (colour[u] == colour[v]) {
+    static int saturation(int v, int[] color) {
+        Set<Integer> usedColors = new HashSet<>();
+
+        for (int i = 0; i < n; i++) {
+            if (graph[v][i] == 1 && color[i] != -1) {
+                usedColors.add(color[i]);
+            }
+        }
+
+        return usedColors.size();
+    }
+
+    static int[] dsatur() {
+        int[] color = new int[n];
+        Arrays.fill(color, -1);
+
+        for (int count = 0; count < n; count++) {
+            int selected = -1;
+            int maxSaturation = -1;
+            int maxDegree = -1;
+
+            for (int v = 0; v < n; v++) {
+                if (color[v] == -1) {
+                    int sat = saturation(v, color);
+                    int degree = getDegree(v);
+
+                    if (sat > maxSaturation ||
+                        (sat == maxSaturation && degree > maxDegree)) {
+                        selected = v;
+                        maxSaturation = sat;
+                        maxDegree = degree;
+                    }
+                }
+            }
+
+            boolean[] unavailable = new boolean[n];
+
+            for (int i = 0; i < n; i++) {
+                if (graph[selected][i] == 1 && color[i] != -1) {
+                    unavailable[color[i]] = true;
+                }
+            }
+
+            int c = 0;
+            while (c < n && unavailable[c]) {
+                c++;
+            }
+
+            color[selected] = c;
+        }
+
+        return color;
+    }
+
+    static int countColors(int[] color) {
+        int max = -1;
+
+        for (int c : color) {
+            max = Math.max(max, c);
+        }
+
+        return max + 1;
+    }
+
+    static String getColourName(int color) {
+        if (color < colourNames.length) {
+            return colourNames[color];
+        }
+
+        return "Colour " + (color + 1);
+    }
+
+    static boolean checkClashes(int[] color) {
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (graph[i][j] == 1 && color[i] == color[j]) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
-    // ---------- Room allocation: largest exam first, smallest hall that fits ----------
-    static String[] allocateHalls(int[] colour, int[] headcount, Hall[] halls) {
-        int n = colour.length;
-        String[] result = new String[n];
-        Arrays.fill(result, "Unassigned");
+    static int findHall(int requiredSeats, boolean[] usedHalls) {
+        int selectedHall = -1;
+        int smallestSeats = Integer.MAX_VALUE;
 
-        for (int slot = 0; slot < slotsUsed(colour); slot++) {
-            List<Integer> exams = new ArrayList<>();
-            for (int i = 0; i < n; i++) {
-                if (colour[i] == slot) {
-                    exams.add(i);
-                }
-            }
-            exams.sort((a, b) -> headcount[b] - headcount[a]);
+        for (int i = 0; i < hallName.length; i++) {
+            if (!usedHalls[i] &&
+                hallSeats[i] >= requiredSeats &&
+                hallSeats[i] < smallestSeats) {
 
-            boolean[] busy = new boolean[halls.length];
-            for (int e : exams) {
-                int chosen = -1;
-                for (int h = 0; h < halls.length; h++) {
-                    if (busy[h] || halls[h].seats < headcount[e]) {
-                        continue;
-                    }
-                    if (chosen == -1 || halls[h].seats < halls[chosen].seats) {
-                        chosen = h;
-                    }
-                }
-                if (chosen != -1) {
-                    busy[chosen] = true;
-                    result[e] = halls[chosen].name;
-                }
+                selectedHall = i;
+                smallestSeats = hallSeats[i];
             }
         }
-        return result;
+
+        return selectedHall;
     }
 
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-        System.out.print("Number of subjects: ");
-        int n = in.nextInt();
-        String[] subject = new String[n];
-        Map<String, Integer> idOf = new HashMap<>();
+        System.out.println("========== EXAM SCHEDULER ==========");
+
+        System.out.print("\nNumber of subjects: ");
+        n = sc.nextInt();
+
+        subject = new String[n];
+        graph = new int[n][n];
+        students = new int[n];
+
         System.out.println("Subject codes:");
         for (int i = 0; i < n; i++) {
-            subject[i] = in.next();
-            idOf.put(subject[i], i);
+            subject[i] = sc.next();
         }
-
-        List<TreeSet<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            graph.add(new TreeSet<>());
-        }
-        int[] headcount = new int[n];
 
         System.out.print("Number of students: ");
-        int m = in.nextInt();
+        int studentCount = sc.nextInt();
+
         System.out.println("Enrolments (roll count code1 code2 ...):");
-        for (int s = 0; s < m; s++) {
-            in.next();
-            int k = in.nextInt();
-            List<Integer> taken = new ArrayList<>();
-            for (int j = 0; j < k; j++) {
-                Integer id = idOf.get(in.next());
-                if (id != null) {
-                    taken.add(id);
-                    headcount[id]++;
+
+        for (int i = 0; i < studentCount; i++) {
+            String roll = sc.next();
+            int count = sc.nextInt();
+
+            int[] enrolled = new int[count];
+
+            for (int j = 0; j < count; j++) {
+                String code = sc.next();
+                enrolled[j] = -1;
+
+                for (int k = 0; k < n; k++) {
+                    if (subject[k].equals(code)) {
+                        enrolled[j] = k;
+                        students[k]++;
+                        break;
+                    }
                 }
             }
-            for (int a = 0; a < taken.size(); a++) {
-                for (int b = a + 1; b < taken.size(); b++) {
-                    graph.get(taken.get(a)).add(taken.get(b));
-                    graph.get(taken.get(b)).add(taken.get(a));
+
+            for (int j = 0; j < count; j++) {
+                for (int k = j + 1; k < count; k++) {
+                    if (enrolled[j] != -1 && enrolled[k] != -1) {
+                        graph[enrolled[j]][enrolled[k]] = 1;
+                        graph[enrolled[k]][enrolled[j]] = 1;
+                    }
                 }
             }
         }
 
         System.out.print("Number of halls: ");
-        int r = in.nextInt();
-        Hall[] halls = new Hall[r];
+        int hallCount = sc.nextInt();
+
+        hallName = new String[hallCount];
+        hallSeats = new int[hallCount];
+
         System.out.println("Hall name and seats:");
-        for (int i = 0; i < r; i++) {
-            halls[i] = new Hall(in.next(), in.nextInt());
+
+        for (int i = 0; i < hallCount; i++) {
+            hallName[i] = sc.next();
+            hallSeats[i] = sc.nextInt();
         }
 
-        int edges = 0;
-        for (TreeSet<Integer> adj : graph) {
-            edges += adj.size();
-        }
-        edges /= 2;
+        int conflicts = 0;
 
-        int[] wp = welshPowell(graph);
-        int[] ds = dsatur(graph);
-
-        System.out.println();
-        System.out.println("Conflict graph: " + n + " subjects, " + edges + " conflicts");
-        System.out.println("Welsh-Powell slots: " + slotsUsed(wp));
-        System.out.println("DSATUR slots      : " + slotsUsed(ds));
-
-        int[] best = slotsUsed(ds) <= slotsUsed(wp) ? ds : wp;
-        String[] hall = allocateHalls(best, headcount, halls);
-
-        System.out.println("Clash check       : " + (isConflictFree(graph, best) ? "PASSED" : "FAILED"));
-        System.out.println();
-        System.out.println("Final timetable (" + slotsUsed(best) + " slots):");
-        for (int slot = 0; slot < slotsUsed(best); slot++) {
-            System.out.println("Slot " + (slot + 1) + ":");
-            for (int i = 0; i < n; i++) {
-                if (best[i] == slot) {
-                    System.out.println("   " + subject[i] + "  ->  " + hall[i]
-                            + "  (" + headcount[i] + " students, " + graph.get(i).size() + " conflicts)");
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (graph[i][j] == 1) {
+                    conflicts++;
                 }
             }
         }
 
-        in.close();
+        int[] wpColor = welshPowell();
+        int[] dsColor = dsatur();
+
+        int[] best = countColors(wpColor) <= countColors(dsColor)
+                ? wpColor : dsColor;
+
+        int totalSlots = countColors(best);
+
+        System.out.println("\n========== COLOURING RESULTS ==========");
+        System.out.println("Conflict graph: " + n
+                + " subjects, " + conflicts + " conflicts");
+        System.out.println("Welsh-Powell slots: " + countColors(wpColor));
+        System.out.println("DSATUR slots      : " + countColors(dsColor));
+        System.out.println("Clash check       : "
+                + (checkClashes(best) ? "PASSED" : "FAILED"));
+
+        System.out.println("\n========== COLOUR ASSIGNMENT ==========");
+
+        for (int i = 0; i < n; i++) {
+            System.out.println(subject[i] + " -> "
+                    + getColourName(best[i])
+                    + " (Slot " + (best[i] + 1) + ")");
+        }
+
+        System.out.println("\n========== FINAL TIMETABLE ==========");
+        System.out.println("Total slots: " + totalSlots);
+
+        for (int slot = 0; slot < totalSlots; slot++) {
+            System.out.println("\nSlot " + (slot + 1)
+                    + " (Colour " + getColourName(slot) + "):");
+
+            boolean[] usedHalls = new boolean[hallCount];
+
+            List<Integer> slotSubjects = new ArrayList<>();
+
+            for (int i = 0; i < n; i++) {
+                if (best[i] == slot) {
+                    slotSubjects.add(i);
+                }
+            }
+
+            slotSubjects.sort((a, b) ->
+                Integer.compare(students[b], students[a])
+            );
+
+            for (int i : slotSubjects) {
+                int hall = findHall(students[i], usedHalls);
+
+                System.out.println("  Subject   : " + subject[i]);
+
+                if (hall != -1) {
+                    System.out.println("  Hall      : " + hallName[hall]);
+                    usedHalls[hall] = true;
+                } else {
+                    System.out.println("  Hall      : No suitable hall available");
+                }
+
+                System.out.println("  Colour    : " + getColourName(best[i]));
+                System.out.println("  Students  : " + students[i]);
+                System.out.println("  Conflicts : " + getDegree(i));
+                System.out.println();
+            }
+        }
+
+        System.out.println("======================================");
+
+        sc.close();
     }
 }
