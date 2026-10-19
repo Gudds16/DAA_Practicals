@@ -1,0 +1,26 @@
+Sample Input
+------------
+5
+12
+OxygenCylinder 5 70
+FirstAidKit 2 30
+Stretcher 7 80
+FoodRation 4 44
+WarmBlanket 3 27
+
+Sample Output
+-------------
+Number of supply types: Helicopter payload limit (kg): Enter label, mass (kg) and benefit for each supply:
+
+Optimal benefit (DP): 150
+--- Dynamic Programming selection ---
+  Total mass    : 12 kg
+  Total benefit : 150
+  * OxygenCylinder (5 kg, benefit 70)
+  * Stretcher (7 kg, benefit 80)
+--- Greedy (benefit per kg) selection ---
+  Total mass    : 11 kg
+  Total benefit : 144
+  * FirstAidKit (2 kg, benefit 30)
+  * OxygenCylinder (5 kg, benefit 70)
+  * FoodRation (4 kg, benefit 44)
