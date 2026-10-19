@@ -1,45 +1,63 @@
-Sample Input
-------------
-8
-DAA DBMS OS CN SE ML TOC CC
-10
-R1 3 OS DAA DBMS
-R2 3 CC SE DBMS
-R3 2 ML TOC
-R4 2 TOC DBMS
-R5 3 CN DBMS DAA
-R6 2 ML SE
-R7 2 ML DBMS
-R8 2 SE TOC
-R9 3 CN DAA ML
-R10 2 TOC CN
-4
-LH1 5
-LH2 4
-LH3 3
-LH4 2
 
-Sample Output
--------------
-Number of subjects: Subject codes:
-Number of students: Enrolments (roll count code1 code2 ...):
-Number of halls: Hall name and seats:
+========== EXAM SCHEDULER ==========
 
-Conflict graph: 8 subjects, 16 conflicts
-Welsh-Powell slots: 5
-DSATUR slots      : 4
+Number of subjects: 4
+Subject codes:
+MATH
+PHY
+CHEM
+CS
+Number of students: 4
+Enrolments (roll count code1 code2 ...):
+S1 2 MATH PHY
+S2 2 MATH CHEM
+S3 2 PHY CS
+S4 2 CHEM CS
+Number of halls: 2
+Hall name and seats:
+HallA 30
+HallB 50
+
+========== COLOURING RESULTS ==========
+Conflict graph: 4 subjects, 4 conflicts
+Welsh-Powell slots: 2
+DSATUR slots      : 2
 Clash check       : PASSED
 
-Final timetable (4 slots):
-Slot 1:
-   DBMS  ->  LH1  (5 students, 7 conflicts)
-Slot 2:
-   OS  ->  LH4  (1 students, 2 conflicts)
-   ML  ->  LH2  (4 students, 5 conflicts)
-   CC  ->  LH3  (1 students, 2 conflicts)
-Slot 3:
-   DAA  ->  LH3  (3 students, 4 conflicts)
-   TOC  ->  LH2  (4 students, 4 conflicts)
-Slot 4:
-   CN  ->  LH3  (3 students, 4 conflicts)
-   SE  ->  LH2  (3 students, 4 conflicts)
+========== COLOUR ASSIGNMENT ==========
+MATH -> Red (Slot 1)
+PHY -> Green (Slot 2)
+CHEM -> Green (Slot 2)
+CS -> Red (Slot 1)
+
+========== FINAL TIMETABLE ==========
+Total slots: 2
+
+Slot 1 (Colour Red):
+  Subject   : MATH
+  Hall      : HallA
+  Colour    : Red
+  Students  : 2
+  Conflicts : 2
+
+  Subject   : CS
+  Hall      : HallB
+  Colour    : Red
+  Students  : 2
+  Conflicts : 2
+
+
+Slot 2 (Colour Green):
+  Subject   : PHY
+  Hall      : HallA
+  Colour    : Green
+  Students  : 2
+  Conflicts : 2
+
+  Subject   : CHEM
+  Hall      : HallB
+  Colour    : Green
+  Students  : 2
+  Conflicts : 2
+
+======================================
